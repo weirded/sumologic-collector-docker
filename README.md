@@ -49,6 +49,8 @@ Sumo’s Docker Logs source and Docker Stats source use the Docker Engine API to
 * Docker container stats. Sumo’s Docker stats source collects stats. For information about Docker stats, see [Get Container Stats Based on Resource Usage](https://docs.docker.com/engine/api/v1.29/#operation/ContainerExporthttps://docs.docker.com/engine/api/v1.29/#operation/ContainerExport) in Docker API documentation.
 
 ## Prerequisites and limitations
+Before installing, review the [Installed Collector Requirements](https://help.sumologic.com/Start-Here/01About-Sumo-Logic/System-Requirements/Installed-Collector-Requirements) help page to understand the resource requirements of the installed collector.
+
 The containers you’re going to monitor must use either the `json-file` or the `journald driver`. For more information, see [Configure Logging Drivers](https://docs.docker.com/engine/admin/logging/overview/) in Docker help.
 
 By default, you can monitor up to 40 Docker containers on a Docker host. If you want to monitor more than 40 containers on a given host, see [To monitor more than 40 containers](#to-monitor-more-than-40-containers).
@@ -299,7 +301,7 @@ Configuration options:
 # Create a custom Docker image
 A base image to build your own image with a custom configuration is tagged latest-no-source. You must add `/etc/sumo-sources.json` to run it. This is the configuration file that specifies the sources, metadata, and settings that the collector should monitor.
 
-Examples are available in example in [GitHub](https://github.com/SumoLogic/sumologic-collector-docker/tree/master/example), along with some example configuration files. Pick one of the examples and rename it to `sumo-sources.json` or create one from scratch. For more information, see [Use JSON to Configure Sources}(https://help.sumologic.com/Send-Data/Sources/03Use-JSON-to-Configure-Sources) in Sumo help.
+Examples are available in example in [GitHub](https://github.com/SumoLogic/sumologic-collector-docker/tree/master/example), along with some example configuration files. Pick one of the examples and rename it to `sumo-sources.json` or create one from scratch. For more information, see [Use JSON to Configure Sources](https://help.sumologic.com/Send-Data/Sources/03Use-JSON-to-Configure-Sources) in Sumo help.
 
 After configuring a `sumo-sources.json` file, create a Dockerfile similar to the one below:
 
