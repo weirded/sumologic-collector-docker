@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 if [[ $SUMO_ACCESS_ID_FILE ]]; then
   export SUMO_ACCESS_ID=$(cat $SUMO_ACCESS_ID_FILE)
 fi
@@ -18,6 +17,7 @@ SUMO_COLLECTOR_NAME=${SUMO_COLLECTOR_NAME_PREFIX='collector_container-'}${SUMO_C
 SUMO_SOURCES_JSON=${SUMO_SOURCES_JSON:=/etc/sumo-sources.json}
 SUMO_SYNC_SOURCES=${SUMO_SYNC_SOURCES:=false}
 SUMO_COLLECTOR_EPHEMERAL=${SUMO_COLLECTOR_EPHEMERAL:=true}
+SUMO_COLLECTOR_HOSTNAME=${SUMO_COLLECTOR_HOSTNAME:=$(cat /etc/hostname)}
 
 generate_user_properties_file() {
     if [ -z "$SUMO_ACCESS_ID" ] || [ -z "$SUMO_ACCESS_KEY" ]; then
@@ -36,7 +36,6 @@ generate_user_properties_file() {
     if [ -d "${SUMO_SOURCES_JSON}" ]; then
         for f in $(find ${SUMO_SOURCES_JSON} -name '*.tmpl'); do TEMPLATE_FILES+=(${f}); done
     fi
-
 
     for from in "${TEMPLATE_FILES[@]}"
     do
@@ -60,7 +59,6 @@ generate_user_properties_file() {
 
     done
 
-
     if [ ! -e "${SUMO_SOURCES_JSON}" ]; then
       echo "FATAL: Unable to find $SUMO_SOURCES_JSON - please make sure you include it in your image!"
       exit 1
@@ -81,6 +79,7 @@ generate_user_properties_file() {
         ["SUMO_ACCESS_KEY"]="accesskey"
         ["SUMO_RECEIVER_URL"]="url"
         ["SUMO_COLLECTOR_NAME"]="name"
+        ["SUMO_COLLECTOR_HOSTNAME"]="hostName"
         ["SUMO_SOURCES_JSON"]="sources"
         ["SUMO_SYNC_SOURCES"]="syncSources"
         ["SUMO_COLLECTOR_EPHEMERAL"]="ephemeral"
@@ -88,7 +87,7 @@ generate_user_properties_file() {
         ["SUMO_PROXY_PORT"]="proxyPort"
         ["SUMO_PROXY_USER"]="proxyUser"
         ["SUMO_PROXY_PASSWORD"]="proxyPassword"
-        ["SUMO_PROXY_NTLM_DOMAIN" ]="proxyNtlmDomain"
+        ["SUMO_PROXY_NTLM_DOMAIN"]="proxyNtlmDomain"
         ["SUMO_CLOBBER"]="clobber"
         ["SUMO_DISABLE_SCRIPTS"]="disableScriptSource"
         ["SUMO_JAVA_MEMORY_INIT"]="wrapper.java.initmemory"
@@ -114,7 +113,6 @@ generate_user_properties_file() {
 $SUMO_GENERATE_USER_PROPERTIES && {
     generate_user_properties_file
 }
-
 
 # Don't leave our shell hanging around
 exec /opt/SumoCollector/collector console
